@@ -1,0 +1,26 @@
+#!/bin/bash
+set -euo pipefail
+# packages/apt.txt hash: {{ include "packages/apt.txt" | sha256sum }}
+
+echo "==> Installing system packages..."
+
+source /etc/os-release
+
+case "$ID" in
+    ubuntu|debian|linuxmint)
+        sudo apt-get update -qq
+        grep -v '^#' "{{ joinPath .chezmoi.sourceDir "packages/apt.txt" }}" | grep -v '^$' | \
+            xargs sudo apt-get install -y --no-install-recommends
+        echo "[OK] apt packages installed"
+        ;;
+    arch|endeavouros|cachyos|manjaro)
+        if [ -f "{{ joinPath .chezmoi.sourceDir "packages/pacman.txt" }}" ]; then
+            grep -v '^#' "{{ joinPath .chezmoi.sourceDir "packages/pacman.txt" }}" | grep -v '^$' | \
+                xargs sudo pacman -S --needed --noconfirm
+            echo "[OK] pacman packages installed"
+        fi
+        ;;
+    *)
+        echo "[SKIP] Unsupported distro: $ID"
+        ;;
+esac

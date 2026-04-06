@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+# dot_config/mise/config.toml hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+
+echo "==> Installing mise runtimes..."
+
+if command -v mise &>/dev/null; then
+    mise install -y
+    echo "[OK] mise runtimes installed"
+else
+    echo "[SKIP] mise not found, install it first (brew install mise)"
+fi

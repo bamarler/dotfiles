@@ -1,0 +1,34 @@
+#!/bin/bash
+set -euo pipefail
+{{ if .useHowdy }}
+echo "==> Setting up Howdy (facial recognition)..."
+
+source /etc/os-release
+
+case "$ID" in
+    ubuntu|debian|linuxmint)
+        if ! command -v howdy &>/dev/null; then
+            echo "Howdy requires the Slimbook PPA. Install manually:"
+            echo "  sudo add-apt-repository ppa:slimbook/slimbook"
+            echo "  sudo apt update && sudo apt install howdy"
+        else
+            echo "[OK] Howdy already installed"
+        fi
+        ;;
+    arch|endeavouros|cachyos|manjaro)
+        if ! command -v howdy &>/dev/null; then
+            echo "Install howdy from AUR:"
+            echo "  yay -S howdy"
+        else
+            echo "[OK] Howdy already installed"
+        fi
+        ;;
+esac
+
+echo ""
+echo "After installing, enroll your face with:"
+echo "  sudo howdy add"
+echo ""
+{{ else }}
+echo "[SKIP] Howdy not enabled"
+{{ end }}

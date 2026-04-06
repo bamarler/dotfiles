@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "==> Installing Flatpak apps..."
+
+if command -v flatpak &>/dev/null; then
+    flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+    FLATPAK_LIST="{{ joinPath .chezmoi.sourceDir "packages/flatpak.txt" }}"
+    if [ -f "$FLATPAK_LIST" ]; then
+        while IFS= read -r app; do
+            [[ -z "$app" || "$app" == \#* ]] && continue
+            flatpak install -y flathub "$app" 2>/dev/null || true
+        done < "$FLATPAK_LIST"
+    fi
+    echo "[OK] Flatpak apps installed"
+else
+    echo "[SKIP] flatpak not found"
+fi

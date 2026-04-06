@@ -1,0 +1,133 @@
+# pacman.txt - Arch Linux equivalents (STUB for future Arch/EndeavourOS migration)
+# This is a best-effort mapping from apt.txt. NOT tested on a real Arch install.
+# Packages marked [AUR] need an AUR helper (yay/paru).
+# Review and adjust before use -- package names shift between distros.
+# Usage: grep -v '^#' pacman.txt | grep -v '^$' | sudo pacman -S --needed -
+# Last updated: 2026-04-06
+
+# Desktop Environment / Wayland
+hyprland
+hypridle
+hyprlock
+sway
+waybar
+wlogout               # [AUR]
+wdisplays
+ulauncher             # [AUR]
+seatd
+brightnessctl
+playerctl
+cliphist
+grim
+slurp
+wl-clipboard
+wev                   # [AUR]
+wf-recorder
+xdg-desktop-portal-gtk
+polkit-kde-agent
+qt5ct
+qt6ct
+
+# Terminal
+kitty
+zsh
+btop
+fastfetch
+lsd
+jq
+ncdu
+
+# Editor
+visual-studio-code-bin  # [AUR]
+
+# Audio / Video
+pipewire
+pipewire-pulse
+wireplumber
+pavucontrol
+pamixer
+mpv
+cava
+ffmpeg
+yt-dlp
+
+# Development
+base-devel
+meson
+clang
+cppcheck
+gdb
+go
+rust
+python-pip
+docker
+docker-compose
+git
+git-lfs
+
+# Networking
+curl
+wget
+tailscale
+globalprotect-openconnect  # [AUR]
+networkmanager-openvpn
+openvpn
+
+# System Utilities
+age
+flatpak
+restic
+timeshift              # [AUR]
+strace
+inxi                   # [AUR]
+nvtop
+lm_sensors
+plocate
+gnome-disk-utility
+qdirstat               # [AUR]
+imagemagick
+pandoc
+
+# Security / Auth
+1password              # [AUR]
+gnupg
+howdy                  # [AUR]
+seahorse
+ufw
+
+# Fonts
+ttf-firacode-nerd
+ttf-font-awesome
+noto-fonts-emoji
+noto-fonts-cjk
+
+# Apps
+firefox
+thunderbird
+vivaldi                # [AUR]
+slack-desktop          # [AUR]
+zoom                   # [AUR]
+warp-terminal          # [AUR]
+
+# Gaming
+gamemode
+
+# Printing
+cups
+simple-scan
+
+# File Management
+imv
+file-roller
+
+# Theming
+papirus-icon-theme
+kvantum
+
+# R / Statistics
+r
+rstudio-desktop-bin    # [AUR]
+
+# TeX / Documents
+texlive-xetex
+texlive-fontsrecommended

@@ -1,0 +1,133 @@
+# apt.txt - Curated system packages for Linux Mint / Ubuntu-based installs
+# Usage: grep -v '^#' apt.txt | grep -v '^$' | xargs sudo apt install -y
+# Last updated: 2026-04-06
+# Trimmed from ~1000 apt-mark entries to intentional packages only.
+# Excludes: lib*, default Mint/Ubuntu packages, kernel/driver packages.
+
+# Desktop Environment / Wayland
+hyprland
+hypridle
+hyprlock
+sway
+waybar
+wlogout
+wdisplays
+ulauncher
+seatd
+brightnessctl
+playerctl
+cliphist
+grim
+slurp
+wl-clipboard
+wev
+wf-recorder
+xdg-desktop-portal-gtk
+polkit-kde-agent-1
+qt5ct
+qt6ct
+
+# Terminal
+kitty
+zsh
+btop
+fastfetch
+lsd
+jq
+ncdu
+
+# Editor
+code
+
+# Audio / Video
+pipewire
+pipewire-pulse
+wireplumber
+pavucontrol
+pamixer
+mpv
+cava
+ffmpeg
+yt-dlp
+
+# Development
+build-essential
+meson
+clang
+clangd
+cppcheck
+gdb
+golang
+cargo
+python3-pip
+docker-ce
+docker-compose-plugin
+git
+git-lfs
+
+# Networking
+curl
+wget
+tailscale
+globalprotect-openconnect
+network-manager-openvpn-gnome
+openvpn
+
+# System Utilities
+age
+flatpak
+restic
+timeshift
+strace
+inxi
+nvtop
+lm-sensors
+plocate
+gnome-disk-utility
+qdirstat
+imagemagick
+pandoc
+
+# Security / Auth
+1password
+gnupg
+howdy
+seahorse
+ufw
+
+# Fonts
+fonts-firacode
+fonts-font-awesome
+fonts-noto-color-emoji
+fonts-noto-cjk
+
+# Apps
+firefox
+thunderbird
+vivaldi-stable
+slack-desktop
+zoom
+warp-terminal
+
+# Gaming
+gamemode
+
+# Printing
+cups
+simple-scan
+
+# File Management
+imv
+file-roller
+
+# Theming
+papirus-icon-theme
+qt5-style-kvantum
+
+# R / Statistics
+r-4.5.2
+rstudio
+
+# TeX / Documents
+texlive-xetex
+texlive-fonts-recommended
