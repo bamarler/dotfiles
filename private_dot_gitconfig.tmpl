@@ -9,14 +9,20 @@
 [merge]
 	conflictStyle = zdiff3
 [user]
-	email = 146089920+bamarler@users.noreply.github.com
-	name = Benjamin Marler
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA3wr6JCk9i3BbQgUK31t2JZiAVI4xPJitpV8zA0zDts
+	email = {{ .gitEmail }}
+	name = {{ .gitName }}
+{{- if .use1Password }}
+	signingkey = {{ .gitSigningKey }}
 [gpg]
 	format = ssh
 [gpg "ssh"]
+{{- if eq .chezmoi.os "darwin" }}
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{- else }}
 	program = /opt/1Password/op-ssh-sign
+{{- end }}
 [commit]
 	gpgsign = true
+{{- end }}
 [credential]
 	helper = cache

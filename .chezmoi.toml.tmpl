@@ -9,7 +9,6 @@
 {{-   $gitSigningKey = promptStringOnce . "gitSigningKey" "SSH signing key (from 1Password, e.g. ssh-ed25519 AAAA...)" -}}
 {{- end -}}
 {{- $useHowdy := promptBoolOnce . "useHowdy" "Use Howdy for facial recognition login (requires IR camera)" -}}
-{{- $sshHosts := promptStringOnce . "sshHosts" "Extra SSH hosts to configure (leave empty for none)" -}}
 
 [data]
     hostname = {{ $hostname | quote }}
@@ -20,4 +19,3 @@
     use1Password = {{ $use1Password }}
     gitSigningKey = {{ $gitSigningKey | quote }}
     useHowdy = {{ $useHowdy }}
-    sshHosts = {{ $sshHosts | quote }}

@@ -1,7 +1,9 @@
+{{- if lookPath "hyprland" }}
 # Auto-start Hyprland on TTY1
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
   exec start-hyprland
 fi
+{{- end }}
 
 # ===========================
 # OH-MY-ZSH CONFIG
@@ -24,10 +26,16 @@ source $ZSH/oh-my-zsh.sh
 # ===========================
 # PATH & ENVIRONMENT
 # ===========================
+{{- if eq .chezmoi.os "linux" }}
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{- else if eq .chezmoi.os "darwin" }}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+{{- end }}
 eval "$(mise activate zsh)"
 export PATH="$HOME/.local/bin:$PATH"
+{{- if .use1Password }}
 export SSH_AUTH_SOCK=~/.1password/agent.sock
+{{- end }}
 
 # fzf integration
 source <(fzf --zsh)

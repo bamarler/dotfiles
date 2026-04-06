@@ -25,11 +25,12 @@ env = RIG_PLATFORM, ubuntu-24.04
 ### NVIDIA ###
 # This is from Hyprland Wiki. Below will be activated nvidia gpu detected
 # See hyprland wiki https://wiki.hyprland.org/Nvidia/#environment-variables
-
+{{ if .hasNvidia }}
 env = LIBVA_DRIVER_NAME,nvidia
 env = __GLX_VENDOR_LIBRARY_NAME,nvidia
 env = NVD_BACKEND,direct
 env = GSK_RENDERER,ngl
+{{- end }}
 
 ### additional ENV's for nvidia. Caution, activate with care ###
 #env = GBM_BACKEND,nvidia-drm
