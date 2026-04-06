@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TEMP=$(mktemp -u).png
-/home/bamarler/.local/bin/grimblast save area "$TEMP"
+$HOME/.local/bin/grimblast save area "$TEMP"
 
 if [ -f "$TEMP" ]; then
     wl-copy < "$TEMP"
