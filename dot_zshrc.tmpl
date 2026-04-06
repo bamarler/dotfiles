@@ -188,6 +188,220 @@ fe() { fzf --preview 'bat --color=always {}' | xargs -r hx; }
 se() { rg --line-number "$1" | fzf | cut -d: -f1 | xargs -r hx; }
 
 # ===========================
+# DOTS — dotfiles management
+# ===========================
+DOTS_SRC="${DOTS_SRC:-$(chezmoi source-path 2>/dev/null || echo "$HOME/.local/share/chezmoi")}"
+DOTS_PACKAGES="$DOTS_SRC/packages"
+DOTS_ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+dots() {
+  local cmd="${1:-help}"
+  shift 2>/dev/null || true
+
+  case "$cmd" in
+    # ── Chezmoi passthrough ──
+    apply)   chezmoi apply -v ;;
+    diff)    chezmoi diff ;;
+    status)  chezmoi status; echo ""; git -C "$DOTS_SRC" status --short ;;
+    doctor)  chezmoi doctor ;;
+    cd)      builtin cd "$DOTS_SRC" ;;
+    edit)    chezmoi edit "$@" ;;
+
+    # ── Sync & update ──
+    sync)
+      chezmoi re-add
+      echo ""
+      printf "\033[1mchezmoi status:\033[0m\n"
+      chezmoi status 2>/dev/null || true
+      echo ""
+      printf "\033[1mgit status:\033[0m\n"
+      git -C "$DOTS_SRC" status --short
+      ;;
+    update)
+      git -C "$DOTS_SRC" pull --rebase
+      chezmoi apply -v
+      printf "\033[0;32m✓ Updated\033[0m\n"
+      ;;
+
+    # ── Install ──
+    install)
+      local target="${1:-all}"
+      shift 2>/dev/null || true
+      case "$target" in
+        all)
+          dots install omz
+          dots install brew
+          dots install apt
+          dots install mise
+          dots install cargo
+          dots install uv
+          dots install flatpak
+          dots install vscode
+          dots install fonts
+          printf "\033[0;32m✓ All install targets complete\033[0m\n"
+          ;;
+        omz)
+          echo "==> oh-my-zsh + plugins"
+          if [ ! -d "$HOME/.oh-my-zsh" ]; then
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+          else
+            echo "✓ oh-my-zsh already installed"
+          fi
+          [ ! -d "$DOTS_ZSH_CUSTOM/plugins/zsh-autosuggestions" ] && \
+            git clone https://github.com/zsh-users/zsh-autosuggestions "$DOTS_ZSH_CUSTOM/plugins/zsh-autosuggestions"
+          [ ! -d "$DOTS_ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ] && \
+            git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$DOTS_ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+          [ ! -d "$DOTS_ZSH_CUSTOM/themes/powerlevel10k" ] && \
+            git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$DOTS_ZSH_CUSTOM/themes/powerlevel10k"
+          ;;
+        brew)
+          echo "==> Homebrew packages"
+          if ! command -v brew &>/dev/null; then
+            echo "Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          fi
+          brew bundle --no-lock --file="$DOTS_PACKAGES/Brewfile"
+          ;;
+        apt)
+          echo "==> System packages"
+          source /etc/os-release
+          case "$ID" in
+            ubuntu|debian|linuxmint)
+              sudo apt-get update -qq
+              grep -v '^#' "$DOTS_PACKAGES/apt.txt" | grep -v '^$' | \
+                xargs sudo apt-get install -y --no-install-recommends
+              ;;
+            arch|endeavouros|cachyos|manjaro)
+              grep -v '^#' "$DOTS_PACKAGES/pacman.txt" | grep -v '^\[AUR\]' | grep -v '^$' | \
+                xargs sudo pacman -S --needed --noconfirm
+              ;;
+            *) echo "Unsupported distro: $ID" ;;
+          esac
+          ;;
+        mise)
+          echo "==> mise runtimes"
+          if command -v mise &>/dev/null; then mise install -y
+          else echo "mise not found — brew install mise"; fi
+          ;;
+        cargo)
+          echo "==> Cargo tools"
+          if command -v cargo &>/dev/null; then cargo install hyprsession wallust 2>/dev/null || true
+          else echo "cargo not found — install Rust first"; fi
+          ;;
+        uv)
+          echo "==> uv tools"
+          if command -v uv &>/dev/null; then
+            for tool in codegraphcontext mcp-codebase-index pyright ruff; do
+              uv tool install "$tool" 2>/dev/null || true
+            done
+          else echo "uv not found — brew install uv"; fi
+          ;;
+        flatpak)
+          echo "==> Flatpak apps"
+          if command -v flatpak &>/dev/null; then
+            flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+            while IFS= read -r app; do
+              [[ -z "$app" || "$app" == \#* ]] && continue
+              flatpak install -y flathub "$app" 2>/dev/null || true
+            done < "$DOTS_PACKAGES/flatpak.txt"
+          else echo "flatpak not found"; fi
+          ;;
+        vscode)
+          echo "==> VS Code extensions"
+          if command -v code &>/dev/null; then
+            while IFS= read -r ext; do
+              [[ -z "$ext" ]] && continue
+              code --install-extension "$ext" --force 2>/dev/null || true
+            done < "$DOTS_PACKAGES/vscode-extensions.txt"
+          else echo "VS Code not found"; fi
+          ;;
+        fonts)
+          echo "==> FantasqueSansM Nerd Font"
+          local font_dir="$HOME/.local/share/fonts/FantasqueSansM"
+          if [ -d "$font_dir" ] && ls "$font_dir"/*.ttf &>/dev/null; then
+            echo "✓ FantasqueSansM already installed"
+          else
+            mkdir -p "$font_dir"
+            local tmp=$(mktemp -d)
+            curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FantasqueSansM.zip" -o "$tmp/font.zip"
+            unzip -qo "$tmp/font.zip" -d "$tmp/extracted"
+            cp "$tmp"/extracted/FantasqueSansMNerdFontMono-*.ttf "$font_dir/"
+            rm -rf "$tmp"
+            fc-cache -f
+            echo "✓ FantasqueSansM installed"
+          fi
+          ;;
+        *) echo "Unknown install target: $target"; echo "Available: all omz brew apt mise cargo uv flatpak vscode fonts" ;;
+      esac
+      ;;
+
+    # ── Check dependencies ──
+    check)
+      printf "\n\033[1m\033[0;36m  Dependency Check\033[0m\n\n"
+      for cmd in chezmoi brew git zsh kitty code mise cargo uv flatpak hyprctl waybar rofi \
+        wallust hyprsession lazygit btop fastfetch grim slurp wl-copy swappy grimblast \
+        jq curl wget rg fd bat lsd age restic notify-send; do
+        if command -v "$cmd" &>/dev/null; then
+          printf "  \033[0;32m✓\033[0m  %-16s %s\n" "$cmd" "$(command -v $cmd)"
+        else
+          printf "  \033[0;31m✗\033[0m  %-16s \033[0;31mnot found\033[0m\n" "$cmd"
+        fi
+      done
+      printf "\n\033[1m  Zsh plugins:\033[0m\n"
+      for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
+        if [ -d "$DOTS_ZSH_CUSTOM/plugins/$plugin" ]; then
+          printf "  \033[0;32m✓\033[0m  %s\n" "$plugin"
+        else
+          printf "  \033[0;31m✗\033[0m  %s \033[0;31mnot found\033[0m\n" "$plugin"
+        fi
+      done
+      if [ -d "$DOTS_ZSH_CUSTOM/themes/powerlevel10k" ]; then
+        printf "  \033[0;32m✓\033[0m  powerlevel10k\n"
+      else
+        printf "  \033[0;31m✗\033[0m  powerlevel10k \033[0;31mnot found\033[0m\n"
+      fi
+      printf "\n\033[1m  Fonts:\033[0m\n"
+      for font_dir in "$HOME"/.local/share/fonts/*/; do
+        [ -d "$font_dir" ] && printf "  \033[0;32m✓\033[0m  %s\n" "$(basename $font_dir)"
+      done
+      printf "\n"
+      ;;
+
+    # ── Init (full first-time setup) ──
+    init)
+      echo "==> Full dotfiles init"
+      dots install all
+      chezmoi apply -v
+      printf "\033[0;32m✓ Init complete — restart your shell\033[0m\n"
+      ;;
+
+    # ── Help ──
+    help|--help|-h)
+      printf "\n\033[1m\033[0;36m  dots\033[0m — dotfiles management\n\n"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots init"           "Full first-time setup (install all + apply)"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots apply"          "Apply chezmoi source → home"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots sync"           "Re-add changed files, show status"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots diff"           "Preview what chezmoi would change"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots status"         "Show chezmoi + git status"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots update"         "Git pull + chezmoi apply"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots doctor"         "Run chezmoi doctor"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots cd"             "cd to chezmoi source dir"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots edit <file>"    "Edit a managed file"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots check"          "Verify all dependencies installed"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots install"        "Run all install targets"
+      printf "  \033[0;32m%-22s\033[0m %s\n" "dots install <name>" "Install: omz brew apt mise cargo uv flatpak vscode fonts"
+      printf "\n"
+      ;;
+
+    *)
+      echo "Unknown command: $cmd"
+      dots help
+      ;;
+  esac
+}
+
+# ===========================
 # ENV VARIABLES
 # ===========================
 export EDITOR='hx'
