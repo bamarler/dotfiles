@@ -1,0 +1,10 @@
+README.md
+SETUP.md
+KEYBINDS.md
+LICENSE
+Makefile
+packages/
+*.bak
+.config/rofi/.current_wallpaper
+.config/hypr/.initial_startup_done
+.config/helix/runtime/

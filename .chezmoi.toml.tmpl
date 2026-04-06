@@ -1,0 +1,23 @@
+{{- $hostname := promptStringOnce . "hostname" "Hostname" -}}
+{{- $gitName := promptStringOnce . "gitName" "Git user name (e.g. John Doe)" -}}
+{{- $gitEmail := promptStringOnce . "gitEmail" "Git email (e.g. user@github)" -}}
+{{- $hasNvidia := promptBoolOnce . "hasNvidia" "Has NVIDIA GPU" -}}
+{{- $monitorConfig := promptStringOnce . "monitorConfig" "Primary monitor config (e.g. 'eDP-1, preferred, auto, 1.67')" -}}
+{{- $use1Password := promptBoolOnce . "use1Password" "Use 1Password for SSH agent & git signing" -}}
+{{- $gitSigningKey := "" -}}
+{{- if $use1Password -}}
+{{-   $gitSigningKey = promptStringOnce . "gitSigningKey" "SSH signing key (from 1Password, e.g. ssh-ed25519 AAAA...)" -}}
+{{- end -}}
+{{- $useHowdy := promptBoolOnce . "useHowdy" "Use Howdy for facial recognition login (requires IR camera)" -}}
+{{- $sshHosts := promptStringOnce . "sshHosts" "Extra SSH hosts to configure (leave empty for none)" -}}
+
+[data]
+    hostname = {{ $hostname | quote }}
+    gitName = {{ $gitName | quote }}
+    gitEmail = {{ $gitEmail | quote }}
+    hasNvidia = {{ $hasNvidia }}
+    monitorConfig = {{ $monitorConfig | quote }}
+    use1Password = {{ $use1Password }}
+    gitSigningKey = {{ $gitSigningKey | quote }}
+    useHowdy = {{ $useHowdy }}
+    sshHosts = {{ $sshHosts | quote }}
