@@ -1,0 +1,9 @@
+[Unit]
+Description=Cycle wallpaper every 15 minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5s
+
+[Install]
+WantedBy=timers.target

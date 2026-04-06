@@ -1,0 +1,87 @@
+{
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{name}"
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50
+    },
+    "mpris": {
+        "format": "♫ {dynamic}",
+        "format-paused": "▶ {dynamic}",
+        "dynamic-order": ["title", "artist"],
+        "dynamic-len": 30
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰈈",
+            "deactivated": ""
+        }
+    },
+    "network": {
+        "format-wifi": "󰖩  {essid}",
+        "format-ethernet": "  {ipaddr}",
+        "format-disconnected": "⚠  Disconnected",
+        "format-disabled": "Disabled",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+        "on-click": "bash ~/scripts/wifi-menu.sh"
+    },
+    "custom/bluetooth": {
+        "format": "",
+        "on-click": "~/scripts/rofi-bluetooth/rofi-bluetooth",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "format": "󰕾  {volume}%",
+        "format-muted": "󰖁  {volume}%",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    },
+    "cpu": {
+        "format": "  {usage}%",
+        "tooltip": true
+    },
+    "memory": {
+        "format": "󰍛  {}%",
+        "tooltip": true
+    },
+    "temperature": {
+        "format": "  {temperatureC}°C",
+        "critical-threshold": 80
+    },
+    "battery": {
+        "interval": 3,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "{icon}  {capacity}%",
+        "format-plugged": "{icon}  {capacity}%",
+        "format-icons": {
+            "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+            "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+            "plugged": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
+        }
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    },
+    "clock": {
+        "format": " {:%I:%M %p | %b %d, %Y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    "custom/power": {
+        "format": "⏻",
+        "on-click": "wlogout",
+        "tooltip": false
+    }
+}

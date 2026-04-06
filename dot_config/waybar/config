@@ -1,0 +1,30 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 42,
+    "spacing": 4,
+    
+    "modules-left": [
+        "idle_inhibitor",
+        "network",
+        "custom/bluetooth",
+        "tray",
+        "mpris"
+    ],
+    "modules-center": [
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-right": [
+        "pulseaudio",
+        "cpu",
+        "memory",
+        "temperature",
+        "battery",
+        "clock",
+        "custom/power"
+    ],
+    
+    "include": ["~/.config/waybar/modules.json"]
+}

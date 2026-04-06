@@ -1,0 +1,6 @@
+[Unit]
+Description=Cycle wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/hypr/UserScripts/WallpaperRandom.sh
