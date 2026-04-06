@@ -1,0 +1,22 @@
+[core]
+	pager = delta
+	editor = hx
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = true
+[merge]
+	conflictStyle = zdiff3
+[user]
+	email = 146089920+bamarler@users.noreply.github.com
+	name = Benjamin Marler
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA3wr6JCk9i3BbQgUK31t2JZiAVI4xPJitpV8zA0zDts
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /opt/1Password/op-ssh-sign
+[commit]
+	gpgsign = true
+[credential]
+	helper = cache

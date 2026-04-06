@@ -1,0 +1,7 @@
+Host *
+    IdentityAgent ~/.1password/agent.sock
+
+Host universe-647
+    HostName universe647.bamarler.com
+    User bamarler
+    ForwardAgent yes
