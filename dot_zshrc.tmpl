@@ -261,7 +261,7 @@ dots() {
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           fi
-          brew bundle --no-lock --file="$DOTS_PACKAGES/Brewfile"
+          brew bundle --file="$DOTS_PACKAGES/Brewfile"
           ;;
         apt)
           echo "==> System packages"
