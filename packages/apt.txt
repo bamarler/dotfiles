@@ -104,10 +104,8 @@ fonts-noto-cjk
 # Apps
 firefox
 thunderbird
-vivaldi-stable
 slack-desktop
 zoom
-warp-terminal
 
 # Gaming
 gamemode

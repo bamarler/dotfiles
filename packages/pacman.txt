@@ -104,10 +104,8 @@ noto-fonts-cjk
 # Apps
 firefox
 thunderbird
-vivaldi                # [AUR]
 slack-desktop          # [AUR]
 zoom                   # [AUR]
-warp-terminal          # [AUR]
 
 # Gaming
 gamemode
