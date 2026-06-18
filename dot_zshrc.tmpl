@@ -61,6 +61,9 @@ alias grep='rg'
 
 # zoxide (better cd)
 alias cd='z'
+# init is correctly the last line of this file; silence the doctor false-positive
+# that fires under non-interactive shells (e.g. Claude Code snapshots)
+export _ZO_DOCTOR=0
 
 # btop (better htop)
 alias top='btop'
