@@ -21,6 +21,16 @@
             "deactivated": ""
         }
     },
+    "privacy": {
+        "icon-spacing": 4,
+        "icon-size": 14,
+        "transition-duration": 250,
+        "modules": [
+            { "type": "screenshare", "tooltip": true },
+            { "type": "audio-in", "tooltip": true },
+            { "type": "audio-out", "tooltip": true }
+        ]
+    },
     "network": {
         "format-wifi": "󰖩  {essid}",
         "format-ethernet": "  {ipaddr}",
@@ -43,6 +53,12 @@
         "on-click": "pavucontrol",
         "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
         "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+    },
+    "disk": {
+        "interval": 10,
+        "format": "󰋊 {percentage_used}%",
+        "path": "/",
+        "tooltip-format": "{used} / {total} ({percentage_used}%)"
     },
     "cpu": {
         "format": "  {usage}%",
@@ -83,5 +99,14 @@
         "format": "⏻",
         "on-click": "wlogout",
         "tooltip": false
+    },    
+    "custom/claudeship": {                                                                                        
+        "exec": "claudeship-waybar-adapter",                                                                    
+        "return-type": "json",                                                                                    
+        "interval": "once",
+        "signal": 8,                                                                                              
+        "tooltip": true,                                                                                          
+        "escape": true,        
+        "on-click": "sel=$($HOME/.local/bin/claudeship-notifier --panel | rofi -dmenu -p claudeship) && [ -n \"$sel\" ] && $HOME/.local/bin/claudeship-notifier --focus \"$sel\""
     }
 }

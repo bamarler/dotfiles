@@ -10,5 +10,6 @@
   ],
   "C_Cpp.intelliSenseEngine": "disabled",
   "claudeCode.preferredLocation": "panel",
-  "editor.fontFamily": "'FantasqueSansM Nerd Font Mono', 'Droid Sans Mono', 'monospace'"
+  "editor.fontFamily": "'FantasqueSansM Nerd Font Mono', 'Droid Sans Mono', 'monospace'",
+  "python.terminal.useEnvFile": true
 }

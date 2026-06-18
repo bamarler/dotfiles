@@ -1,4 +1,10 @@
-{{- if .use1Password }}
+
 Host *
+{{- if .use1Password }}
     IdentityAgent ~/.1password/agent.sock
-{{ end -}}
+{{- end }}
+    ForwardAgent yes
+
+Host universe-647
+    HostName 100.79.165.76
+    User bamarler

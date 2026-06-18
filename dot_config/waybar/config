@@ -7,6 +7,7 @@
     
     "modules-left": [
         "idle_inhibitor",
+        "privacy",
         "network",
         "custom/bluetooth",
         "tray",
@@ -17,7 +18,9 @@
         "hyprland/window"
     ],
     "modules-right": [
+        "custom/claudeship",
         "pulseaudio",
+        "disk",
         "cpu",
         "memory",
         "temperature",
