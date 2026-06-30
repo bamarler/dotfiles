@@ -15,3 +15,21 @@ packages/
 .config/kitty/kitty-themes/01-Wallust.conf
 .config/rofi/wallust/colors-rofi.rasi
 .config/waybar/wallust/colors-waybar.css
+
+{{- if eq .chezmoi.os "darwin" }}
+.config/hypr
+.config/waybar
+.config/rofi
+.config/swaync
+.config/wlogout
+.config/hypr/hyprlock.conf
+.config/hypr/hypridle.conf
+{{- end }}
+
+{{- if ne .chezmoi.os "darwin" }}
+.aerospace.toml
+.config/aerospace
+.config/sketchybar
+.config/karabiner
+.config/borders
+{{- end }}
