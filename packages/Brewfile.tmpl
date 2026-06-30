@@ -1,48 +1,60 @@
 tap "oven-sh/bun"
-# Clone of cat(1) with syntax highlighting and Git integration
+{{- if eq .chezmoi.os "darwin" }}
+tap "manaflow-ai/cmux"
+tap "nikitabobko/tap"
+tap "felixkratz/formulae"
+{{- end }}
+
+# --- Shared brew formulae ---
 brew "bat"
-# GNU compiler collection
-brew "gcc"
-# Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
-# Manage your dotfiles across multiple diverse machines, securely
 brew "chezmoi"
-# Modern, maintained replacement for ls
 brew "eza"
-# Simple, fast and user-friendly alternative to find
 brew "fd"
-# Command-line fuzzy finder written in Go
 brew "fzf"
-# GitHub command-line tool
+brew "gcc"
 brew "gh"
-# Syntax-highlighting pager for git and diff output
 brew "git-delta"
-# Post-modern modal text editor
+brew "go"
 brew "helix"
-# Lightweight and flexible command-line JSON processor
 brew "jq"
-# Simple terminal UI for git commands
 brew "lazygit"
-# Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Jupyter Notebook Diff and Merge tools
 brew "nbdime"
-# Python package management tool
 brew "poetry"
-# Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# Official tldr client written in Rust
 brew "tlrc"
-# Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# Linter for YAML files
 brew "yamllint"
-# Shell extension to navigate your filesystem faster
 brew "zoxide"
-# UNIX shell (command interpreter)
 brew "zsh"
-# Terminal-based AI coding assistant
+{{- if eq .chezmoi.os "darwin" }}
+
+# --- macOS-only brew formulae ---
+brew "borders"
+
+# --- macOS casks ---
+cask "1password"
+cask "1password-cli"
+cask "nikitabobko/tap/aerospace"
 cask "claude-code"
+cask "cmux"
+cask "font-fantasque-sans-mono-nerd-font"
+cask "ghostty"
+cask "hammerspoon"
+cask "karabiner-elements"
+cask "orbstack"
+cask "orion"
+cask "raycast"
+cask "shottr"
+cask "slack"
+cask "spotify"
+cask "tailscale-app"
+cask "visual-studio-code"
+cask "whatsapp"
+{{- end }}
+
+# --- Shared VS Code extensions ---
 vscode "alefragnani.rtf"
 vscode "anthropic.claude-code"
 vscode "astro-build.astro-vscode"
@@ -84,13 +96,28 @@ vscode "tomoki1207.pdf"
 vscode "usernamehw.errorlens"
 vscode "vadimcn.vscode-lldb"
 vscode "xaver.clang-format"
-go "cmd/go"
-go "cmd/gofmt"
-cargo "hyprsession"
+
+# --- Shared cargo ---
 cargo "wallust"
+{{- if ne .chezmoi.os "darwin" }}
+
+# --- Linux-only cargo ---
+cargo "hyprsession"
+{{- end }}
+
+# --- Shared uv tools ---
 uv "codegraphcontext"
-uv "mcp-codebase-index[mcp]"
 uv "pyright"
 uv "ruff"
+
+# mcp-codebase-index[mcp] in both OS blocks (not shared) — Python 3.11+ requirement
+{{- if eq .chezmoi.os "darwin" }}
+uv "mcp-codebase-index[mcp]"
+{{- end }}
+{{- if ne .chezmoi.os "darwin" }}
+uv "mcp-codebase-index[mcp]"
+
+# --- Linux-only flatpak ---
 flatpak "com.github.eneshecan.WhatsAppForLinux"
 flatpak "com.spotify.Client"
+{{- end }}

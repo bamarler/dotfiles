@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-# packages/Brewfile hash: {{ include "packages/Brewfile" | sha256sum }}
+# packages/Brewfile.tmpl hash: {{ include "packages/Brewfile.tmpl" | sha256sum }}
 
 echo "==> Installing Homebrew packages..."
 
@@ -8,8 +8,12 @@ echo "==> Installing Homebrew packages..."
 if ! command -v brew &>/dev/null; then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
+{{ if eq .chezmoi.os "darwin" -}}
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+{{- else -}}
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{- end }}
 fi
 
-brew bundle --file="{{ joinPath .chezmoi.sourceDir "packages/Brewfile" }}"
+chezmoi execute-template < "{{ joinPath .chezmoi.sourceDir "packages/Brewfile.tmpl" }}" | brew bundle --file=-
 echo "[OK] Homebrew packages installed"
