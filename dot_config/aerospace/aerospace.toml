@@ -13,6 +13,9 @@ default-root-container-orientation = 'auto'
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
+# Hover a window to focus it
+focus-follows-mouse.enabled = true
+
 [gaps]
 inner.horizontal = 8
 inner.vertical = 8
