@@ -28,7 +28,8 @@ outer.bottom = 8
 
 # --- Launchers ---
 # Terminal: change the app name here to switch your default terminal
-cmd-enter = 'exec-and-forget open -a cmux'
+# -n opens a new window each press (Ghostty is lightweight; tile them across workspaces)
+cmd-enter = 'exec-and-forget open -n -a Ghostty'
 # Browser: -n opens a new window each press (park them across workspaces)
 cmd-b = 'exec-and-forget open -n -a Orion'
 
