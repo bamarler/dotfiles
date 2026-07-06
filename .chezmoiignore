@@ -1,6 +1,7 @@
 README.md
 SETUP.md
 KEYBINDS.md
+MACOS.md
 LICENSE
 Makefile
 packages/
@@ -29,7 +30,7 @@ packages/
 {{- if ne .chezmoi.os "darwin" }}
 .aerospace.toml
 .config/aerospace
+.config/ghostty
 .config/sketchybar
 .config/karabiner
-.config/borders
 {{- end }}

@@ -2,7 +2,6 @@ tap "oven-sh/bun"
 {{- if eq .chezmoi.os "darwin" }}
 tap "manaflow-ai/cmux"
 tap "nikitabobko/tap"
-tap "felixkratz/formulae"
 {{- end }}
 
 # --- Shared brew formulae ---
@@ -29,9 +28,6 @@ brew "yamllint"
 brew "zoxide"
 brew "zsh"
 {{- if eq .chezmoi.os "darwin" }}
-
-# --- macOS-only brew formulae ---
-brew "borders"
 
 # --- macOS casks ---
 cask "1password"

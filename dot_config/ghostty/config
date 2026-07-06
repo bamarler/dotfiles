@@ -1,0 +1,7 @@
+# Ghostty configuration
+# Docs / full option list: https://ghostty.org/docs/config
+# Reload after editing: Cmd+Shift+, (or `ghostty +reload-config`)
+
+# Match the Nerd Font used across the rest of the setup (kitty, VS Code, etc.)
+font-family = FantasqueSansM Nerd Font Mono
+font-size = 16

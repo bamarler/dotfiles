@@ -1,6 +1,9 @@
 # dotfiles
 
-Fully reproducible Linux desktop environment using [chezmoi](https://www.chezmoi.io/). One command to set up a complete Hyprland + Wayland workstation from scratch.
+Fully reproducible cross-platform environment using [chezmoi](https://www.chezmoi.io/): a complete Hyprland + Wayland workstation on Linux, and an AeroSpace-tiled setup on macOS, from a single repo (OS-gated via `.chezmoiignore` + templated `Brewfile`).
+
+> **On a Mac?** Follow **[MACOS.md](MACOS.md)** — it has the macOS-specific bootstrap, permission
+> grants, and manual app settings. The Quick Start below is Linux/Hyprland.
 
 ## Quick Start
 

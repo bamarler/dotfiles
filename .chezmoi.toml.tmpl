@@ -1,14 +1,20 @@
 {{- $hostname := promptStringOnce . "hostname" "Hostname" -}}
 {{- $gitName := promptStringOnce . "gitName" "Git user name (e.g. John Doe)" -}}
 {{- $gitEmail := promptStringOnce . "gitEmail" "Git email (e.g. user@github)" -}}
-{{- $hasNvidia := promptBoolOnce . "hasNvidia" "Has NVIDIA GPU" -}}
-{{- $monitorConfig := promptStringOnce . "monitorConfig" "Primary monitor config (e.g. 'eDP-1, preferred, auto, 1.67')" -}}
 {{- $use1Password := promptBoolOnce . "use1Password" "Use 1Password for SSH agent & git signing" -}}
 {{- $gitSigningKey := "" -}}
 {{- if $use1Password -}}
 {{-   $gitSigningKey = promptStringOnce . "gitSigningKey" "SSH signing key (from 1Password, e.g. ssh-ed25519 AAAA...)" -}}
 {{- end -}}
-{{- $useHowdy := promptBoolOnce . "useHowdy" "Use Howdy for facial recognition login (requires IR camera)" -}}
+{{- /* Linux/Hyprland-only prompts — skipped on macOS to keep the Mac init fast */ -}}
+{{- $hasNvidia := false -}}
+{{- $monitorConfig := "" -}}
+{{- $useHowdy := false -}}
+{{- if ne .chezmoi.os "darwin" -}}
+{{-   $hasNvidia = promptBoolOnce . "hasNvidia" "Has NVIDIA GPU" -}}
+{{-   $monitorConfig = promptStringOnce . "monitorConfig" "Primary monitor config (e.g. 'eDP-1, preferred, auto, 1.67')" -}}
+{{-   $useHowdy = promptBoolOnce . "useHowdy" "Use Howdy for facial recognition login (requires IR camera)" -}}
+{{- end -}}
 
 [data]
     hostname = {{ $hostname | quote }}

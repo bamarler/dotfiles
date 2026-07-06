@@ -266,9 +266,14 @@ dots() {
           if ! command -v brew &>/dev/null; then
             echo "Installing Homebrew..."
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" </dev/null
+{{ if eq .chezmoi.os "darwin" -}}
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+{{- else -}}
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{- end }}
           fi
-          brew bundle --file="$DOTS_PACKAGES/Brewfile"
+          # Brewfile is templated (OS-gated) — render it before handing to brew bundle
+          chezmoi execute-template < "$DOTS_PACKAGES/Brewfile.tmpl" | brew bundle --file=-
           ;;
         apt)
           echo "==> System packages"
